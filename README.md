@@ -6,7 +6,7 @@
 
 https://stedolan.github.io/jq/download/
 
-### with jq installed, add the JSON config and the script to init the completion
+### time to add a JSON config and an init script for your fn/app
 
 1. clone this repo
 2. copy AND rename tab-completion.json to the funtion you want to add. YOU NEED TO NAME THE FILE like so <fn_name>-completion.json in the same folder as tab-completion-lib.sh
