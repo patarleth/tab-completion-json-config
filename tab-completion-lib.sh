@@ -49,9 +49,9 @@ _get_function_option_value() {
 }
 
 _mergeCompletionJsonForFn() {
-    echo '{}' > "$TAB_COMPLETION_DIR/merged_comp.json"
-    local mergedJsonFile="$TAB_COMPLETION_DIR/merged_comp.json"
-    for compJsonFile in $(ls -1 $TAB_COMPLETION_DIR/*completion.json); do
+    echo '{}' > "$TAB_COMPLETION_DIR/completion-config/merged_comp.json"
+    local mergedJsonFile="$TAB_COMPLETION_DIR/completion-config/merged_comp.json"
+    for compJsonFile in $(ls -1 $TAB_COMPLETION_DIR/completion-config/*completion.json); do
         # echo $compJsonFile
         echo "$(jq -s '.[0] + .[1]' "$mergedJsonFile" "$compJsonFile")" > "$mergedJsonFile"
     done
@@ -63,11 +63,11 @@ _mergeCompletionJsonForFn() {
 # ######################## ######################## ######################## 
 _rawCompletionJsonForFn() {    
     local defaultResult='{ "none": { "data": "default\nresult" } }'
-    if [ ! -e "$TAB_COMPLETION_DIR/merged_comp.json" ]; then
+    if [ ! -e "$TAB_COMPLETION_DIR/completion-config/merged_comp.json" ]; then
         _mergeCompletionJsonForFn
     fi
     
-    local dataFile="$TAB_COMPLETION_DIR/merged_comp.json"
+    local dataFile="$TAB_COMPLETION_DIR/completion-config/merged_comp.json"
     local jsonResult="$defaultResult"
     
     local fnName="$1"
