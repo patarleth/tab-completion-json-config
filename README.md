@@ -23,6 +23,6 @@ source tab-completion-sample-functions.sh
 
 yay(?)
 
-### feel free to combine together as many functions in the JSON file as you like.
+### feel free to combine together as many functions in a single JSON file as makes sense
 
 ENJOY! or don't I don't care...
