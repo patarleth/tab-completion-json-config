@@ -63,11 +63,14 @@ _mergeCompletionJsonForFn() {
 # ######################## ######################## ######################## 
 _rawCompletionJsonForFn() {    
     local defaultResult='{ "none": { "data": "default\nresult" } }'
-    local dataFile="$TAB_COMPLETION_DIR/tab-completion-data.json"
+    if [ ! -e "$TAB_COMPLETION_DIR/merged_comp.json" ]; then
+        _mergeCompletionJsonForFn
+    fi
+    
+    local dataFile="$TAB_COMPLETION_DIR/merged_comp.json"
     local jsonResult="$defaultResult"
     
     local fnName="$1"
-
     if [ ! "${_comp_json_raw_map["$fnName"]}" == "" ]; then
         jsonResult="${_comp_json_raw_map["$fnName"]}"
     else    
