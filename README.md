@@ -9,7 +9,7 @@ https://stedolan.github.io/jq/download/
 ### time to add a JSON config and an init script for your fn/app
 
 1. clone this repo
-2. copy AND rename completion-config/tab-completion.json to the funtion you want to add. THE name of the file _MUST_ be in this form: <fn_name>-completion.json AND placed in the same folder as tab-completion-lib.sh. <fn_name> can be anything you like. The only thing that matters is the file ends in -completion.json
+2. copy AND rename completion-config/tab-completion.json to the funtion you want to add. THE name of the file _MUST_ be in this form: <fn_name>-completion.json AND placed in the same folder as completion-config/tab-completion.json. <fn_name> can be anything you like. The only thing that matters is the file ends in -completion.json
 3. add a config for each of the command line args of your function
 4. write bash functions that provide the dynamic data for functions arguments. Output is very simple. Each line in the output (carriage return delimited ( '\n' )) is made available as a tab completion value. Checkout the tab-completion-sample-functions.sh has a complete example with docs.
 5. source your functions file and tab-completion-lib.sh in your .bashrc etc.
