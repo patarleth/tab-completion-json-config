@@ -1,4 +1,4 @@
-# bash 4+ functions to help wire together <TAB> completions using JSON config
+# bash 4+ functions to help configure <TAB> completions using JSON
 
 ### requirements -
 
