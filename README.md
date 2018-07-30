@@ -15,9 +15,13 @@ https://stedolan.github.io/jq/download/
 4.a tab-completion-sample-functions.sh has a complete example with docs
 5. source your functions file and tab-completion-lib.sh
 
-### REMEMBER you don't run the script. You source the functions into your existing shell like so
+### REMEMBER - you don't run the script, you source it.
+
+The functions need to be available in your existing shell, so you _source_ the file
 
 source tab-completion-sample-functions.sh
+
+yay(?)
 
 ### feel free to combine together as many functions in the JSON file as you like.
 
