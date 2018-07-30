@@ -16,7 +16,7 @@ https://stedolan.github.io/jq/download/
 
 ### REMEMBER - you don't run the script, you source it.
 
-The functions need to be available in your existing shell, so you _source_ the file
+the functions need to be available in your existing shell, so you _source_ the file
 
 source tab-completion-sample-functions.sh
 
@@ -24,12 +24,13 @@ yay(?)
 
 ### feel free to combine together as many functions in a single JSON file as makes sense
 
+grouping your completion configs by task and not individual function makes a lot of sense. Do that.
 
 ### I currently cache the dynamic completions ONLY ONCE.
 
-Yes I know this stinks. Without the in memory caching, the original functions were too slow when they hit the source systems each time.  Feel free to change the code to run the fn everytime ;) 
+yes I know this stinks. Without the in memory caching, the original functions were too slow when they hit the source systems each time.  Feel free to change the code to run the fn everytime ;) 
 
-For V0.2 my plan is to add a simple TTL based on the merge-completion.json file update time.
+for V0.2 my plan is to add a simple TTL based on the merge-completion.json file update time.
 
 
 ENJOY! or don't I don't care...
