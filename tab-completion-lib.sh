@@ -1,5 +1,16 @@
-TAB_COMPLETION_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+TAB_COMPLETION_SCRIPT="${BASH_SOURCE[0]}"
+TAB_COMPLETION_SCRIPT_DIR="$( cd "$( dirname "$TAB_COMPLETION_SCRIPT" )" >/dev/null && pwd )"
 
+if [ ! "$(type addTabCompletionConfig 2> /dev/null )" == "" ]; then
+    # echo tab-completion-lib already sourced
+    return
+fi
+echo adding tab-completion-lib functions
+
+sourceTabCompletionFunctions() {
+    unset addTabCompletionConfig
+    source "$TAB_COMPLETION_SCRIPT"
+}
 # ######################## ######################## ######################## 
 # globals for matching raw and populated json objects
 # ######################## ######################## ######################## 
@@ -11,7 +22,7 @@ declare -A _comp_json_raw_map
 declare -A _comp_json_loaded_map
 
 tabCompletionJsonConfigDirectory() {
-    echo "$TAB_COMPLETION_DIR/completion-config"
+    echo "$TAB_COMPLETION_SCRIPT_DIR/completion-config"
 }
 
 tabCompletionInit() {
@@ -23,6 +34,8 @@ addTabCompletionConfig() {
     local data="$2"
     
     local bn="$(basename $config)"
+    mkdir -p "$(tabCompletionJsonConfigDirectory)"
+
     local outputFile="$(tabCompletionJsonConfigDirectory)/$bn"
     #echo "adding tab completion config $outputFile"
 
@@ -105,7 +118,7 @@ _rawCompletionJsonForFn() {
         if [ "$_comp_json_for_all" == "" ]; then
             if [ -f "$dataFile" ]; then
                 _comp_json_for_all="$(cat "$dataFile")"
-                #echo "$_comp_json_for_all" >> "$TAB_COMPLETION_DIR/log.txt"
+                #echo "$_comp_json_for_all" >> "$TAB_COMPLETION_SCRIPT_DIR/log.txt"
             else
                 _comp_json_for_all="{ \"default\": $default }"
             fi
@@ -113,7 +126,7 @@ _rawCompletionJsonForFn() {
         
         local v="$(echo "$_comp_json_for_all" | jq ".\"$fnName\"" 2> /dev/null)"
         if [[ "$v" == "" || "$v" == "null" ]]; then
-            #echo "unknown fnName $fnName" >> "$TAB_COMPLETION_DIR/log.txt"
+            #echo "unknown fnName $fnName" >> "$TAB_COMPLETION_SCRIPT_DIR/log.txt"
             v="$jsonResult"
         fi
         jsonResult="$v"
@@ -157,7 +170,7 @@ _setDynamicCompData() {
             local jqSet=". .\"$key\".data |= "
             jqSet+="$( printf "$($fn)" | jq -c -s -R  .)"
 
-            #echo "jqSet $jqSet" >> "$TAB_COMPLETION_DIR/log.txt"
+            #echo "jqSet $jqSet" >> "$TAB_COMPLETION_SCRIPT_DIR/log.txt"
             jsonStr="$(echo "$jsonStr" | jq "$jqSet")"
 
             # (>&2 echo "staticDataFn found $fn")
