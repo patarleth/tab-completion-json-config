@@ -5,7 +5,6 @@ if [ ! "$(type addTabCompletionConfig 2> /dev/null )" == "" ]; then
     # echo tab-completion-lib already sourced
     return
 fi
-echo adding tab-completion-lib functions
 
 sourceTabCompletionFunctions() {
     unset addTabCompletionConfig
