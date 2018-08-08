@@ -2,8 +2,8 @@
 
 ### requirements -
 
-    bash 4.4 (which means __brew upgrade bash__ is in your future macos users)
-    jq - https://stedolan.github.io/jq/ for json parsing    
+    bash 4.4 with 'complete' (which means a __brew upgrade bash && brew install bash-completion__ is in your future macos users)
+    jq - for json parsing
 
 https://stedolan.github.io/jq/download/
 
