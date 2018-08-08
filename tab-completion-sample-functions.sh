@@ -27,10 +27,16 @@ read -d '' TABTESTER_TAB_COMPLETION_JSON <<-"_EOF_"
     "tabTester": {
         "none": { "data": "--source\n--dest" },
         "--source": { "data": "", "staticDataFn": "listSourceKafkaTopics" },
-        "--dest": { "data": "", "staticDataFn": "listDestKafkaTopics" }
+        "--dest": { "data": "", "staticDataFn": "listDestKafkaTopics" },
+        "--random": { "data": "", "fn": "_sillyRandomFn" }
     }
 }
 _EOF_
+
+_sillyRandomFn() {
+    echo "randomVal-$((1 + RANDOM % 10))"
+    echo "randomVal-$((1 + RANDOM % 10))"
+}
 
 # add tab completion config to the config directory
 addTabCompletionConfig 'tab-completion.json' "$TABTESTER_TAB_COMPLETION_JSON"
