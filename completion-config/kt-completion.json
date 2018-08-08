@@ -1,9 +1,9 @@
 {
     "kt": { 
         "none": { "data": "consume\nproduce\ntopic\ngroup\n-brokers\n-topic\n-filter\n-leaders\n-partitions\n-pretty\n-replicas\n-verbose\n-version\n-help" },
-        "-brokers": { "data": "", "fn": "listKafkaBrokers" },
+        "-brokers": { "data": "", "staticDataFn": "listKafkaBrokers" },
         "-offsets": { "data": "0\n0:0\n:0:0-10\nall=0\nall=0-10\nnewest\noldest" },
-        "-topic": { "data": "", "fn": "listSourceKafkaTopics" },
+        "-topic": { "data": "", "staticDataFn": "listSourceKafkaTopics" },
         "-timeout": { "data": "0" },
         "-pretty": { "data": "true\nfalse" },
         "-filter": { "data": ".*-sdr-.*\n.*sw.*\n.*sportware.*\nid-graph.*" },

@@ -26,7 +26,7 @@ yay(?)
 
 grouping your completion configs by task and not individual function makes a lot of sense. Do that.
 
-### I currently cache the dynamic completions ONLY ONCE.
+### I currently cache the dynamic completions ONLY ONCE for the staticDataFn field
 
 yes I know this stinks. Without the in memory caching, the original functions were too slow when they hit the source systems each time.  Feel free to change the code to run the fn everytime ;) 
 

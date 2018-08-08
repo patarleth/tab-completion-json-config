@@ -10,6 +10,32 @@ unset _comp_json_loaded_map
 declare -A _comp_json_raw_map
 declare -A _comp_json_loaded_map
 
+tabCompletionJsonConfigDirectory() {
+    echo "$TAB_COMPLETION_DIR/completion-config"
+}
+
+tabCompletionInit() {
+    rm -f "$(tabCompletionJsonConfigDirectory)/merged_comp.json"
+}
+
+addTabCompletionConfig() {
+    local config="$1"
+    local data="$2"
+    
+    local bn="$(basename $config)"
+    local outputFile="$(tabCompletionJsonConfigDirectory)/$bn"
+    echo "adding tab completion config $outputFile"
+
+    if [ -e "$config" ]; then
+        echo copying config file "$config"
+        cp "$config" "$outputFile"
+    else
+        echo creating config file
+        echo "$data" > "$outputFile"
+        cat "$outputFile"
+    fi
+    tabCompletionInit
+}
 # ######################## ######################## ######################## 
 # search the param list for the option name (or argument position)
 # ######################## ######################## ######################## 
@@ -49,9 +75,10 @@ _get_function_option_value() {
 }
 
 _mergeCompletionJsonForFn() {
-    echo '{}' > "$TAB_COMPLETION_DIR/completion-config/merged_comp.json"
-    local mergedJsonFile="$TAB_COMPLETION_DIR/completion-config/merged_comp.json"
-    for compJsonFile in $(ls -1 $TAB_COMPLETION_DIR/completion-config/*completion.json); do
+    local configDir="$(tabCompletionJsonConfigDirectory)"
+    echo '{}' > "$configDir/merged_comp.json"
+    local mergedJsonFile="$configDir/merged_comp.json"
+    for compJsonFile in $(ls -1 $configDir/*completion.json); do
         # echo $compJsonFile
         echo "$(jq -s '.[0] + .[1]' "$mergedJsonFile" "$compJsonFile")" > "$mergedJsonFile"
     done
@@ -62,12 +89,13 @@ _mergeCompletionJsonForFn() {
 # using the raw map return the json for functions passed
 # ######################## ######################## ######################## 
 _rawCompletionJsonForFn() {    
+    local configDir="$(tabCompletionJsonConfigDirectory)"
     local defaultResult='{ "none": { "data": "default\nresult" } }'
-    if [ ! -e "$TAB_COMPLETION_DIR/completion-config/merged_comp.json" ]; then
+    if [ ! -e "$configDir/merged_comp.json" ]; then
         _mergeCompletionJsonForFn
     fi
     
-    local dataFile="$TAB_COMPLETION_DIR/completion-config/merged_comp.json"
+    local dataFile="$configDir/merged_comp.json"
     local jsonResult="$defaultResult"
     
     local fnName="$1"
@@ -102,6 +130,7 @@ _loadedCompletionJsonForFn() {
     local fnName="$1"
     local jsonResult="${_comp_json_loaded_map[$fnName]}"
     if [ "$jsonResult" == "" ]; then
+        # (>&2 echo "$fnName not found in _comp_json_loaded_map")
         local jsonStr="$(_rawCompletionJsonForFn "$fnName")"
         jsonResult="$(_setDynamicCompData "$jsonStr")"
         _comp_json_loaded_map[$fnName]="$jsonResult"
@@ -123,12 +152,16 @@ _setDynamicCompData() {
     IFS=$'\n' keys=($(echo "$jsonStr" | jq -r keys[]))
 
     for key in ${keys[@]}; do
-        local fn="$(echo "$jsonStr" | jq -r ".\"$key\".fn")"
-        if [ ! "$fn" == "null" ]; then
+        local fn="$(echo "$jsonStr" | jq -r ".\"$key\".staticDataFn")"
+        if [ ! "$fn" == "null" ] && [ ! "$fn" == "" ]; then
             local jqSet=". .\"$key\".data |= "
             jqSet+="$( printf "$($fn)" | jq -c -s -R  .)"
+
             #echo "jqSet $jqSet" >> "$TAB_COMPLETION_DIR/log.txt"
             jsonStr="$(echo "$jsonStr" | jq "$jqSet")"
+
+            # (>&2 echo "staticDataFn found $fn")
+            # (>&2 echo "- $jsonStr")
         fi
     done
     echo "$jsonStr"
@@ -163,14 +196,30 @@ _fetchCompWords() {
     local keyName="$1"
     local completionJsonStr="$2"
     local optionName=".\"$keyName\".data"
+    local found=false
 
     local test_d="$(echo "$completionJsonStr" | jq -r "$optionName" 2> /dev/null)"
+
     if [ "$test_d" == "" ] || [ "$test_d" == "null" ]; then
-        _test_data_str="$(echo "$completionJsonStr" | jq -r .none.data)"
+        # when empty data, try looking for an fn field
+        optionName=".\"$keyName\".fn"
+        test_d="$(echo "$completionJsonStr" | jq -r "$optionName" 2> /dev/null)"
+        if [ "$test_d" == "" ] || [ "$test_d" == "null" ]; then
+            found=false
+        else
+            # fn field found execute fn save results
+            _test_data_str="$($test_d)"
+            found=true
+        fi
     else
         _test_data_str="$test_d"
+        found=true
     fi
 
+    if [ ! "$found" == "true" ]; then
+        _test_data_str="$(echo "$completionJsonStr" | jq -r .none.data)"
+    fi
+    
     for topic in $_test_data_str; do
         result+="$topic"
         result+=$'\n'
