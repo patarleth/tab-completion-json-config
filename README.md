@@ -7,7 +7,13 @@
 
 https://stedolan.github.io/jq/download/
 
-bash 4.4 means a __brew upgrade bash && brew install bash-completion__ is in your future macos users. Ubuntu Et Al - you are set to go.
+bash 4.4 is a bit annoying for macos users. You'll need to upgrade the default bash (v3+) with a version from the early 90s.
+
+    install brew - https://brew.sh/
+    brew upgrade bash
+    brew install bash-completion
+    
+Ubuntu Et Al - you are set to go.
 
 ### time to add a JSON config and a 'complete' init script for your fn/app
 
