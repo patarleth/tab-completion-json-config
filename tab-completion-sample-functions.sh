@@ -1,5 +1,11 @@
 TAB_COMP_LIB_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
+if [ -e "~/.tab-completion-config/tab-completion-lib.sh" ]; then
+    source ~/.tab-completion-config/tab-completion-lib.sh
+else
+    source "$TAB_COMP_LIB_SCRIPT_DIR/tab-completion-lib.sh"
+fi
+
 read -r -d '' KT_TAB_COMPLETION_JSON <<-"_EOF_"
 {
     "kt": { 
