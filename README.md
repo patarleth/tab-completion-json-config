@@ -9,19 +9,26 @@ https://stedolan.github.io/jq/download/
 ### time to add a JSON config and a 'complete' init script for your fn/app
 
 1. clone this repo
-2. checkout and tab-completion-sample-functions.sh for an example on how to add tab completion to kt and a function called tabTester (use emacs or not)
-3. the important bit is at the top of the file. It defines the tab completion json config, key is the function/app name. Case sensitive, must match exactly.
-4. add a config for each command you want tab completion for.  They can be in the same file, you don't need sep. configs for each fun. It's just JSON, comman sep.
-5. with the json writting, Time to write the bash functions that provide either static (aka cached forever) and the dynamic data for functions arguments. The output of the data functions is very simple. Each line in the output (carriage return delimited ( '\n' )) is made available as a tab completion value. Checkout the tab-completion-sample-functions.sh has a complete example with docs.
-6. source your functions file and tab-completion-lib.sh in your .bashrc etc.
-7. for an example of dynamic data check out the tabTester function config. The option --random is bound to _sillyRandomFn. so if you were to type tabTester --random<tab><tab> it would print two random strings to match.
-8. if you don't want to use a function to provide the static, checkout kt's -offsets config.  The values are placed directly in data sep. by \n
+2. tab-completion-sample-functions.sh contains examples for adding tab completion to an existing program - kt (https://github.com/fgeller/kt) __AND__ a bash function tabTester
+3. the json config for both apps is at the top of the file. I inlined the config in the shell script for completeness. It config consists of a "key" (aka the function/program name for completion) and the program arguments and the function or static data the completion is mapped to. The key is case sensitive. It must match exactly.
+4. After getting your head around how to configure completion, it's time to create your own script and add a config for each program/fn you want tab completion for.  The configuration can be in the same json config. It is not necessary to sep. configs the configurations. It's just JSON, comman sep. the commands and it'll work.
+5. with the json written, it's time to code the bash functions that provide the completion data.  There are two ways to provide completion results. You can define a static function (aka the data will cached for the duration fo the shell session) and(!) as dynamic data where the function is called very time you press__<TAB><TAB>__. The output of the functions that provide tab completion is very simple - each option returned is separated on it's own line in the output (carriage return delimited ( '\n' ). Checkout __tab-completion-sample-functions.sh_ for a complete example with additional documentation.
+6. With the json config and functions providing tab completion written, source them (and tab-completion-lib.sh) in your .bashrc etc.
+
+
+For an example of dynamic generated data, check out the tabTester function json config in __tab-completion-sample-functions.sh_. The option --random is bound to the shell function _sillyRandomFn. You can test this by sourcing the file and typing 
+
+  tabTester --random<tab><tab> 
+  
+This will print two random strings to match upon.
+
+__tab-completion-sample-functions.sh__ also contains many examples of both functions that provide static data and inlined completion results. I recommend checking out __kt__'s -offsets config for an example of inlined tab completion data.  The values are placed directly in the data property, sep. by \n
 
 ### REMEMBER - you don't run the script, you source it.
 
-the functions need to be available in your existing shell, so you _source_ the file
-
 source tab-completion-sample-functions.sh
+
+To make functions available to your existing shell, you _source_ a file _NOT_ execute it
 
 yay(?)
 
