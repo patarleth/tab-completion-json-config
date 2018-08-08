@@ -1,5 +1,8 @@
 TAB_COMPLETION_SCRIPT="${BASH_SOURCE[0]}"
-TAB_COMPLETION_SCRIPT_DIR="$( cd "$( dirname "$TAB_COMPLETION_SCRIPT" )" >/dev/null && pwd )"
+TAB_COMPLETION_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+#echo "TAB_COMPLETION_SCRIPT $TAB_COMPLETION_SCRIPT"
+#echo "TAB_COMPLETION_SCRIPT_DIR $TAB_COMPLETION_SCRIPT_DIR"
 
 if [ ! "$(type addTabCompletionConfig 2> /dev/null )" == "" ]; then
     # echo tab-completion-lib already sourced
@@ -31,12 +34,16 @@ tabCompletionInit() {
 addTabCompletionConfig() {
     local config="$1"
     local data="$2"
-    
+        
     local bn="$(basename $config)"
+    
     mkdir -p "$(tabCompletionJsonConfigDirectory)"
 
     local outputFile="$(tabCompletionJsonConfigDirectory)/$bn"
-    #echo "adding tab completion config $outputFile"
+    # echo "addTabCompletionConfig $config basename $bn"
+    # echo "outputFile $outputFile"
+    # echo "$data"
+    # echo "adding tab completion config $outputFile"
 
     if [ -e "$config" ]; then
         #echo copying config file "$config"

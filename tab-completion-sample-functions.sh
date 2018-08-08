@@ -1,6 +1,4 @@
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-
-source "$SCRIPT_DIR/tab-completion-lib.sh"
+TAB_COMP_LIB_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 read -r -d '' KT_TAB_COMPLETION_JSON <<-"_EOF_"
 {
