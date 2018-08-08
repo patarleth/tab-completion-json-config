@@ -2,7 +2,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 source "$SCRIPT_DIR/tab-completion-lib.sh"
 
-read -d '' KT_TAB_COMPLETION_JSON <<-"_EOF_"
+read -r -d '' KT_TAB_COMPLETION_JSON <<-"_EOF_"
 {
     "kt": { 
         "none": { "data": "consume\nproduce\ntopic\ngroup\n-brokers\n-topic\n-filter\n-leaders\n-partitions\n-pretty\n-replicas\n-verbose\n-version\n-help" },
@@ -22,7 +22,7 @@ _EOF_
 # add kt tab completion config to the config directory
 addTabCompletionConfig 'kt-completion.json' "$KT_TAB_COMPLETION_JSON"
 
-read -d '' TABTESTER_TAB_COMPLETION_JSON <<-"_EOF_"
+read -r -d '' TABTESTER_TAB_COMPLETION_JSON <<-"_EOF_"
 {
     "tabTester": {
         "none": { "data": "--source\n--dest" },

@@ -240,7 +240,7 @@ _fetchCompWords() {
     echo "$result"
 }
 
-read -d '' DEFAULT_TAB_COMPLETION_JSON <<-"_EOF_"
+read -r -d '' DEFAULT_TAB_COMPLETION_JSON <<-"_EOF_"
 {
     "default": {
         "none": { "data": "what" }
