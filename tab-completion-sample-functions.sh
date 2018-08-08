@@ -2,6 +2,39 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 source "$SCRIPT_DIR/tab-completion-lib.sh"
 
+read -d '' KT_TAB_COMPLETION_JSON <<-"_EOF_"
+{
+    "kt": { 
+        "none": { "data": "consume\nproduce\ntopic\ngroup\n-brokers\n-topic\n-filter\n-leaders\n-partitions\n-pretty\n-replicas\n-verbose\n-version\n-help" },
+        "-brokers": { "data": "", "staticDataFn": "listKafkaBrokers" },
+        "-offsets": { "data": "0\n0:0\n:0:0-10\nall=0\nall=0-10\nnewest\noldest" },
+        "-topic": { "data": "", "staticDataFn": "listSourceKafkaTopics" },
+        "-timeout": { "data": "0" },
+        "-pretty": { "data": "true\nfalse" },
+        "-filter": { "data": ".*-sdr-.*\n.*sw.*\n.*sportware.*\nid-graph.*" },
+        "topic": { "data": "-brokers\n-filter\n-leaders\n-partitions\n-pretty\n-replicas\n-verbose\n-version" },
+        "consume": { "data": "-brokers\n-filter\n-leaders\n-partitions\n-pretty\n-replicas\n-verbose\n-version" },
+        "group": { "data": "-brokers\n-topic\n-offsets\n-filter\n-leaders\n-partitions\n-pretty\n-replicas\n-verbose\n-version" }
+    }
+}
+_EOF_
+
+# add kt tab completion config to the config directory
+addTabCompletionConfig 'kt-completion.json' "$KT_TAB_COMPLETION_JSON"
+
+read -d '' TABTESTER_TAB_COMPLETION_JSON <<-"_EOF_"
+{
+    "tabTester": {
+        "none": { "data": "--source\n--dest" },
+        "--source": { "data": "", "staticDataFn": "listSourceKafkaTopics" },
+        "--dest": { "data": "", "staticDataFn": "listDestKafkaTopics" }
+    }
+}
+_EOF_
+
+# add tab completion config to the config directory
+addTabCompletionConfig 'tab-completion.json' "$TABTESTER_TAB_COMPLETION_JSON"
+
 # ######################## ######################## ######################## 
 # sample function demonstration how tab completion could be added to a fn
 # ######################## ######################## ######################## 

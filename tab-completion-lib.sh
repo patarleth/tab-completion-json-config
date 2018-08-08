@@ -227,3 +227,14 @@ _fetchCompWords() {
 
     echo "$result"
 }
+
+read -d '' DEFAULT_TAB_COMPLETION_JSON <<-"_EOF_"
+{
+    "default": {
+        "none": { "data": "what" }
+    }
+}
+_EOF_
+
+# add default tab completion config to the config directory
+addTabCompletionConfig 'default-completion.json' "$DEFAULT_TAB_COMPLETION_JSON"
