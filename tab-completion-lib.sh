@@ -24,15 +24,15 @@ addTabCompletionConfig() {
     
     local bn="$(basename $config)"
     local outputFile="$(tabCompletionJsonConfigDirectory)/$bn"
-    echo "adding tab completion config $outputFile"
+    #echo "adding tab completion config $outputFile"
 
     if [ -e "$config" ]; then
-        echo copying config file "$config"
+        #echo copying config file "$config"
         cp "$config" "$outputFile"
     else
-        echo creating config file
+        #echo creating config file
         echo "$data" > "$outputFile"
-        cat "$outputFile"
+        #cat "$outputFile"
     fi
     tabCompletionInit
 }
