@@ -1,7 +1,0 @@
-{
-    "tabTester": {
-        "none": { "data": "--source\n--dest" },
-        "--source": { "data": "", "staticDataFn": "listSourceKafkaTopics" },
-        "--dest": { "data": "", "staticDataFn": "listDestKafkaTopics" }
-    }
-}
